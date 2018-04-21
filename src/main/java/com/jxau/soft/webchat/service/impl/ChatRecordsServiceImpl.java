@@ -48,6 +48,8 @@ public class ChatRecordsServiceImpl implements ChatRecordsService {
         recordExample.or().andFromUserIdEqualTo(fromUserId).andToUserIdEqualTo(toUserId);
         recordExample.or().andFromUserIdEqualTo(toUserId).andToUserIdEqualTo(fromUserId);
 
-        return 0;
+        TbRecord record = new TbRecord();
+        record.setRecordStatus(2);
+        return recordMapper.updateByExampleSelective(record, recordExample);
     }
 }
