@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html>
@@ -78,7 +78,7 @@
         context.init({preventDoubleContext: false});
         context.settings({compress: true});
         context.attach('#chat-view', [
-            {header: '操作菜单',},
+            {header: '操作菜单'},
             {text: '清理', action: clearConsole},
             {divider: true},
             {
@@ -213,7 +213,7 @@
 
         //将会话记录加入数据库中(只能单人单条，即：to中只有一个userid)
         //待加入emoji支持
-        if(to !== ""){
+        if (to !== "") {
             $.ajax({
                 url: "${pageContext.request.contextPath}/user/addRecord",
                 type: "POST",
@@ -280,7 +280,7 @@
      */
     function showNotice(notice) {
         $("#chat").append("<div><p class=\"am-text-success\" style=\"text-align:center\"><span class=\"am-icon-bell\"></span> " + notice + "</p></div>");
-        var chat = $("#chat-view");
+        var chat = $("#chat-view-main").children(".am-scrollable-vertical");
         chat.scrollTop(chat[0].scrollHeight);   //让聊天区始终滚动到最下面
     }
 
@@ -297,7 +297,7 @@
             "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">" + message.from + "</a> 发表于<time> " + message.time + "</time> 发送给: " + to + " </div></header><div class=\"am-comment-bd\"> <p>" + message.content + "</p></div></div></li>";
         $("#chat").append(html);
         $("#message").val("");  //清空输入区
-        var chat = $("#chat-view");
+        var chat = $("#chat-view-main").children(".am-scrollable-vertical");
         chat.scrollTop(chat[0].scrollHeight);   //让聊天区始终滚动到最下面
     }
 
@@ -332,7 +332,7 @@
                     "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">Robot</a> 发表于<time> " + getDateFull() + "</time> 发送给: ${userid}</div></header><div class=\"am-comment-bd\"> <p>" + data.text + "</p><a href=\"" + data.url + "\" target=\"_blank\">" + data.url + "</a></div></div></li>";
             }
             $("#chat").append(html);
-            var chat = $("#chat-view");
+            var chat = $("#chat-view-main").children(".am-scrollable-vertical");
             chat.scrollTop(chat[0].scrollHeight);
             $("#message").val("");  //清空输入区
         });
@@ -342,17 +342,16 @@
      * 添加接收人
      */
     function addChat(user) {
-        //Ajax 前后台交互
+        // Ajax 前后台交互
         // 在添加接收人的后
         // 1.刷新聊天区<div>。 补充：将当前div与当前会话进行绑定，即将其id改成特定值
         // 2.填充发送者和接受者双方的聊天记录。补充：将所有聊天记录变为已读
-        //（这可以看做是每次点击接收者便创建一个房间，然后进行AA通讯）
+        // （这可以看做是每次点击接收者便创建一个房间，然后进行AA通讯）
         // 先抛弃多人聊天、群聊等等。
 
-        var chatdiv = $("#chat-view-main");
-        chatdiv.children[0].id = ${userid}+"chat-view-"+user;
-
-
+        //用户绑定会话div
+        var chatdiv = $("#chat-view-main")[0];
+        chatdiv.children[0].id = '${userid}' + '-chat-view-' + user;
 
         $.ajax({
             url: "${pageContext.request.contextPath}/user/records",
@@ -365,7 +364,8 @@
             },
             dataType: "json",
             success: function (data) {
-                $("#chat").html("");
+                var chat = $("#chat");
+                chat.html("");
                 // layer.open({
                 //     title: '在线调试',
                 //     content: data[0].content+'--'+data[1].content
@@ -374,11 +374,14 @@
                     var isSef = '${userid}' === data[i].fromUserId ? "am-comment-flip" : "";   //如果是自己则显示在右边,他人信息显示在左边
                     var html = "<li class=\"am-comment " + isSef + " am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/" + data[i].fromUserId + "/head\"></a><div class=\"am-comment-main\">\n" +
                         "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">" + data[i].fromUserId + "</a> 发表于<time> " + data[i].recordCreateTime + "</time> 发送给: " + data[i].toUserId + " </div></header><div class=\"am-comment-bd\"> <p>" + data[i].content + "</p></div></div></li>";
-                    $("#chat").append(html);
+                    chat.append(html);
                 }
+                var chat = $("#chat-view-main").children(".am-scrollable-vertical");
+                chat.scrollTop(chat[0].scrollHeight);   //让聊天区始终滚动到最下面（无效）
             },
             error: function () {
-                $("#chat").html("");
+                var chat = $("#chat");
+                chat.html("");
                 // layer.open({
                 //     title: '在线调试',
                 //     content: '空记录！'
@@ -392,8 +395,6 @@
         if (receive.indexOf(user) === -1) {    //排除重复
             sendto.text(user);
         }
-        var chat = $("#chat-view");
-        chat.scrollTop = chat.scrollHeight;   //让聊天区始终滚动到最下面（无效）
     }
 
     /**
@@ -413,8 +414,9 @@
      */
     function getDateFull() {
         var date = new Date();
-        var currentdate = date.getFullYear() + "-" + appendZero(date.getMonth() + 1) + "-" + appendZero(date.getDate()) + " " + appendZero(date.getHours()) + ":" + appendZero(date.getMinutes()) + ":" + appendZero(date.getSeconds());
-        return currentdate;
+        return date.getFullYear() + "-" + appendZero(date.getMonth() + 1) + "-" +
+            appendZero(date.getDate()) + " " + appendZero(date.getHours()) + ":" +
+            appendZero(date.getMinutes()) + ":" + appendZero(date.getSeconds());
     }
 </script>
 </body>

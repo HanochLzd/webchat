@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html>
@@ -15,7 +15,9 @@
     <div class="admin-content">
 
         <div class="am-cf am-padding">
-            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">系统设置</strong> / <small>form</small></div>
+            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">系统设置</strong> /
+                <small>form</small>
+            </div>
         </div>
 
         <div class="am-tabs am-margin" data-am-tabs>
@@ -91,7 +93,9 @@
                         </div>
                         <div class="am-form-group">
                             <div class="am-u-sm-10 am-u-sm-offset-2">
-                                <button type="submit" class="am-btn am-round am-btn-success"><span class="am-icon-send"></span> 提交</button>
+                                <button type="submit" class="am-btn am-round am-btn-success"><span
+                                        class="am-icon-send"></span> 提交
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -100,20 +104,24 @@
                 <div class="am-tab-panel am-fade" id="tab2">
                     <form class="am-form am-form-horizontal" style="text-align: center;">
                         <div style="text-align: center;margin-bottom: 10px">
-                            <img class="am-circle" src="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/1000/h/1000/q/80" width="140" height="140" alt="Amayadream"/>
+                            <img class="am-circle"
+                                 src="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/1000/h/1000/q/80"
+                                 width="140" height="140" alt="Amayadream"/>
                         </div>
                         <div class="am-form-group am-form-file">
                             <button type="button" class="am-btn am-btn-secondary am-btn-sm">
-                                <i class="am-icon-cloud-upload"></i> 选择要上传的文件</button>
+                                <i class="am-icon-cloud-upload"></i> 选择要上传的文件
+                            </button>
                             <input id="doc-form-file" type="file" multiple>
                         </div>
                         <div id="file-list"></div>
-                        <button class="am-btn am-round am-btn-success"><span class="am-icon-upload"></span> 上传头像</button>
+                        <button class="am-btn am-round am-btn-success"><span class="am-icon-upload"></span> 上传头像
+                        </button>
                         <script>
-                            $(function() {
-                                $('#doc-form-file').on('change', function() {
+                            $(function () {
+                                $('#doc-form-file').on('change', function () {
                                     var fileNames = '';
-                                    $.each(this.files, function() {
+                                    $.each(this.files, function () {
                                         fileNames += '<span class="am-badge">' + this.name + '</span> ';
                                     });
                                     $('#file-list').html(fileNames);
@@ -148,7 +156,9 @@
 
                         <div class="am-form-group">
                             <div class="am-u-sm-10 am-u-sm-offset-2">
-                                <button type="submit" class="am-btn am-round am-btn-success"><span class="am-icon-send"></span> 提交修改</button>
+                                <button type="submit" class="am-btn am-round am-btn-success"><span
+                                        class="am-icon-send"></span> 提交修改
+                                </button>
                             </div>
                         </div>
                     </form>
