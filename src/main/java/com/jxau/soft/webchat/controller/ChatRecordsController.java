@@ -51,6 +51,9 @@ public class ChatRecordsController {
     @RequestMapping(value = "/records", method = RequestMethod.POST)
     @ResponseBody
     public String queryRecords(String fromUserId, String toUserId) {
+        //将会话记录标记为已读
+        chatRecordsService.updateRecords(toUserId, fromUserId);
+        //查询所有记录
         List<TbRecord> records = chatRecordsService.getRecords(fromUserId, toUserId);
         // list转JSONArray
         if (!records.isEmpty()) {
@@ -96,6 +99,20 @@ public class ChatRecordsController {
     }
 
     /**
+     * 已读会话记录
+     *
+     * @param fromUserId 发
+     * @param toUserId   收
+     * @return String
+     */
+    @RequestMapping(value = "/readRecords", method = RequestMethod.POST)
+    @ResponseBody
+    public String readRecords(String fromUserId, String toUserId) {
+        int num = chatRecordsService.updateRecords(fromUserId, toUserId);
+        return JSON.toJSONString("sucess:" + num);
+    }
+
+    /**
      * 拼装record对象
      *
      * @param fromUserId       fromUserId
@@ -113,6 +130,7 @@ public class ChatRecordsController {
         record.setRecordCreateTime(dateFormat.parse(recordCreateTime));
         record.setToUserId(toUserId);
         record.setRecordId(UuidUtil.getTimeBasedUuid().toString().replace("-", ""));
+        record.setRecordStatus(1);
         return record;
     }
 

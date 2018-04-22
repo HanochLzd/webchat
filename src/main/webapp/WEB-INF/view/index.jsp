@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<!DOCTYPE html>
 <html>
 <head>
     <title>WebChat | 聊天</title>
@@ -212,7 +213,7 @@
         }));
 
         //将会话记录加入数据库中(只能单人单条，即：to中只有一个userid)
-        //待加入emoji支持
+        //加入emoji支持
         if (to !== "") {
             $.ajax({
                 url: "${pageContext.request.contextPath}/user/addRecord",
@@ -291,14 +292,42 @@
         //判断是否为当前div
         //如果是：则 1.直接向该div追加会话条目 2.用ajax（fetch）向后台发送已读信息
         //否：在在线列表对应的联系人展现红点提示以及出现右下角弹窗提示
+
         var to = message.to == null || message.to === "" ? "全体成员" : message.to;   //获取接收人
-        var isSef = '${userid}' === message.from ? "am-comment-flip" : "";   //如果是自己则显示在右边,他人信息显示在左边
-        var html = "<li class=\"am-comment " + isSef + " am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/" + message.from + "/head\"></a><div class=\"am-comment-main\">\n" +
-            "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">" + message.from + "</a> 发表于<time> " + message.time + "</time> 发送给: " + to + " </div></header><div class=\"am-comment-bd\"> <p>" + message.content + "</p></div></div></li>";
-        $("#chat").append(html);
-        $("#message").val("");  //清空输入区
-        var chat = $("#chat-view-main").children(".am-scrollable-vertical");
-        chat.scrollTop(chat[0].scrollHeight);   //让聊天区始终滚动到最下面
+
+        var from = message.from;
+
+        var chatdiv = $("#chat-view-main").children(".am-scrollable-vertical")[0];
+        //确定再当前聊天页面
+        if (chatdiv.id.indexOf('${userid}') >= 0 && chatdiv.id.indexOf(to) >= 0) {
+            //确定接受者是当前用户
+            if (to === '${userid}') {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/user/readRecords",
+                    type: "POST",
+                    traditional: true,
+                    contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                    data: {
+                        fromUserId: message.from,
+                        toUserId: to
+                    },
+                    success: function () {
+                    }
+                });
+            }
+            var isSef = '${userid}' === message.from ? "am-comment-flip" : "";   //如果是自己则显示在右边,他人信息显示在左边
+            var html = "<li class=\"am-comment " + isSef + " am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/" + message.from + "/head\"></a><div class=\"am-comment-main\">\n" +
+                "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">" + message.from + "</a> 发表于<time> " + message.time + "</time> 发送给: " + to + " </div></header><div class=\"am-comment-bd\"> <p>" + message.content + "</p></div></div></li>";
+            $("#chat").append(html);
+            $("#message").val("");  //清空输入区
+            var chat = $("#chat-view-main").children(".am-scrollable-vertical");
+            chat.scrollTop(chat[0].scrollHeight);   //让聊天区始终滚动到最下面
+
+        } else {
+            //获取接收者的li
+
+        }
+
     }
 
     /**
@@ -307,7 +336,7 @@
     function showOnline(list) {
         $("#list").html("");    //清空在线列表
         $.each(list, function (index, item) {     //添加私聊按钮
-            var li = "<li>" + item + "</li>";
+            var li = "<li>" + item + "<i class=\"am-icon-refresh am-icon-spin\"></i></li>";
             if ('${userid}' !== item) {    //排除自己
                 li = "<li>" + item + " <button type=\"button\" class=\"am-btn am-btn-xs am-btn-primary am-round\" onclick=\"addChat('" + item + "');\"><span class=\"am-icon-phone\"><span> 私聊</button></li>";
             }
