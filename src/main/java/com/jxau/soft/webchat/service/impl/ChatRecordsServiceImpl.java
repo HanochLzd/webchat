@@ -50,8 +50,6 @@ public class ChatRecordsServiceImpl implements ChatRecordsService {
         TbRecordExample recordExample = new TbRecordExample();
         //拼装where组合条件
         recordExample.or().andFromUserIdEqualTo(fromUserId).andToUserIdEqualTo(toUserId);
-        //recordExample.or().andFromUserIdEqualTo(toUserId).andToUserIdEqualTo(fromUserId);
-
         TbRecord record = new TbRecord();
         record.setRecordStatus(2);
         return recordMapper.updateByExampleSelective(record, recordExample);

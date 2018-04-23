@@ -75,6 +75,8 @@
 <%--<jsp:include page="include/footer.jsp"/>--%>
 
 <script>
+    //用于判断未读消息是否加了小红点
+    var flag = 0;
     $(function () {
         context.init({preventDoubleContext: false});
         context.settings({compress: true});
@@ -308,7 +310,7 @@
                     traditional: true,
                     contentType: "application/x-www-form-urlencoded;charset=utf-8",
                     data: {
-                        fromUserId: message.from,
+                        fromUserId: from,
                         toUserId: to
                     },
                     success: function () {
@@ -324,8 +326,17 @@
             chat.scrollTop(chat[0].scrollHeight);   //让聊天区始终滚动到最下面
 
         } else {
-            //获取接收者的li
-
+            //获取接收者的<li>
+            var userli = $("#" + from + "");
+            if (flag === 0) {
+                userli.append("<span class=\"layui-badge-dot\" id=\"" + from + "-dot\"></span>");
+                flag = 1;
+            }
+            //弹窗提示
+            layer.msg("来自" + from + "的消息！", {
+                offset: 'rb',
+                anim: 2
+            });
         }
 
     }
@@ -336,9 +347,9 @@
     function showOnline(list) {
         $("#list").html("");    //清空在线列表
         $.each(list, function (index, item) {     //添加私聊按钮
-            var li = "<li>" + item + "<i class=\"am-icon-refresh am-icon-spin\"></i></li>";
+            var li = "<li>" + item + "<span class=\"layui-badge-dot\"></span></li>";
             if ('${userid}' !== item) {    //排除自己
-                li = "<li>" + item + " <button type=\"button\" class=\"am-btn am-btn-xs am-btn-primary am-round\" onclick=\"addChat('" + item + "');\"><span class=\"am-icon-phone\"><span> 私聊</button></li>";
+                li = "<li id=\"" + item + "\">" + item + " <button type=\"button\" class=\"am-btn am-btn-xs am-btn-primary am-round\" onclick=\"addChat('" + item + "');\"><span class=\"am-icon-phone\"><span> 私聊</button></li>";
             }
             $("#list").append(li);
         });
@@ -378,52 +389,60 @@
         // （这可以看做是每次点击接收者便创建一个房间，然后进行AA通讯）
         // 先抛弃多人聊天、群聊等等。
 
-        //用户绑定会话div
-        var chatdiv = $("#chat-view-main")[0];
-        chatdiv.children[0].id = '${userid}' + '-chat-view-' + user;
+        //消除未读提示（小红点）
+        $("#" + user + "-dot").remove();
+        flag = 0;
+        layer.load(2);
+        //添加加载动画
+        setTimeout(function () {
+            //用户绑定会话div
+            var chatdiv = $("#chat-view-main")[0];
+            chatdiv.children[0].id = '${userid}' + '-chat-view-' + user;
 
-        $.ajax({
-            url: "${pageContext.request.contextPath}/user/records",
-            type: "POST",
-            traditional: true,
-            contentType: "application/x-www-form-urlencoded;charset=utf-8",
-            data: {
-                fromUserId: '${userid}',
-                toUserId: user
-            },
-            dataType: "json",
-            success: function (data) {
-                var chat = $("#chat");
-                chat.html("");
-                // layer.open({
-                //     title: '在线调试',
-                //     content: data[0].content+'--'+data[1].content
-                // });
-                for (var i = 0; i < data.length; i++) {
-                    var isSef = '${userid}' === data[i].fromUserId ? "am-comment-flip" : "";   //如果是自己则显示在右边,他人信息显示在左边
-                    var html = "<li class=\"am-comment " + isSef + " am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/" + data[i].fromUserId + "/head\"></a><div class=\"am-comment-main\">\n" +
-                        "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">" + data[i].fromUserId + "</a> 发表于<time> " + data[i].recordCreateTime + "</time> 发送给: " + data[i].toUserId + " </div></header><div class=\"am-comment-bd\"> <p>" + data[i].content + "</p></div></div></li>";
-                    chat.append(html);
+            $.ajax({
+                url: "${pageContext.request.contextPath}/user/records",
+                type: "POST",
+                traditional: true,
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                data: {
+                    fromUserId: '${userid}',
+                    toUserId: user
+                },
+                dataType: "json",
+                success: function (data) {
+                    var chat = $("#chat");
+                    chat.html("");
+                    // layer.open({
+                    //     title: '在线调试',
+                    //     content: data[0].content+'--'+data[1].content
+                    // });
+                    for (var i = 0; i < data.length; i++) {
+                        var isSef = '${userid}' === data[i].fromUserId ? "am-comment-flip" : "";   //如果是自己则显示在右边,他人信息显示在左边
+                        var html = "<li class=\"am-comment " + isSef + " am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/" + data[i].fromUserId + "/head\"></a><div class=\"am-comment-main\">\n" +
+                            "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">" + data[i].fromUserId + "</a> 发表于<time> " + data[i].recordCreateTime + "</time> 发送给: " + data[i].toUserId + " </div></header><div class=\"am-comment-bd\"> <p>" + data[i].content + "</p></div></div></li>";
+                        chat.append(html);
+                    }
+                    var chat = $("#chat-view-main").children(".am-scrollable-vertical");
+                    chat.scrollTop(chat[0].scrollHeight);   //让聊天区始终滚动到最下面
+                },
+                error: function () {
+                    var chat = $("#chat");
+                    chat.html("");
+                    // layer.open({
+                    //     title: '在线调试',
+                    //     content: '空记录！'
+                    // });
                 }
-                var chat = $("#chat-view-main").children(".am-scrollable-vertical");
-                chat.scrollTop(chat[0].scrollHeight);   //让聊天区始终滚动到最下面（无效）
-            },
-            error: function () {
-                var chat = $("#chat");
-                chat.html("");
-                // layer.open({
-                //     title: '在线调试',
-                //     content: '空记录！'
-                // });
+            });
+            var sendto = $("#sendto");
+            //var receive = sendto.text() === "全体成员" ? "" : sendto.text() + ",";
+            //目前只写one-to-one会话
+            var receive = sendto.text();
+            if (receive.indexOf(user) === -1) {    //排除重复
+                sendto.text(user);
             }
+            layer.closeAll('loading');
         });
-        var sendto = $("#sendto");
-        //var receive = sendto.text() === "全体成员" ? "" : sendto.text() + ",";
-        //目前只写one-to-one会话
-        var receive = sendto.text();
-        if (receive.indexOf(user) === -1) {    //排除重复
-            sendto.text(user);
-        }
     }
 
     /**
