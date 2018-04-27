@@ -30,7 +30,7 @@
             </div>
             <!-- 接收者 -->
             <div class="" style="float: left">
-                <p class="am-kai">发送给 : <span id="sendto">全体成员</span>
+                <p class="am-kai">发送给 : <span id="sendto"></span>
                     <button class="am-btn am-btn-xs am-btn-danger" onclick="$('#sendto').text('全体成员')">复位</button>
                 </p>
             </div>
@@ -75,8 +75,6 @@
 <%--<jsp:include page="include/footer.jsp"/>--%>
 
 <script>
-    //用于判断未读消息是否加了小红点
-    var flag = 0;
     $(function () {
         context.init({preventDoubleContext: false});
         context.settings({compress: true});
@@ -251,6 +249,7 @@
         //回车发送消息
         if (ev.keyCode === 13) {
             sendMessage();
+            $("#message").val("");  //清空输入区
         }
     }
 
@@ -279,12 +278,11 @@
     }
 
     /**
-     * 展示提示信息
+     * 展示提示信息(待做：将其转换成弹窗提醒，而不是追加在div中！！！！！！！！！！！！！！！！)
      */
     function showNotice(notice) {
         $("#chat").append("<div><p class=\"am-text-success\" style=\"text-align:center\"><span class=\"am-icon-bell\"></span> " + notice + "</p></div>");
-        var chat = $("#chat-view-main").children(".am-scrollable-vertical");
-        chat.scrollTop(chat[0].scrollHeight);   //让聊天区始终滚动到最下面
+        divToTheEnd();   //让聊天区始终滚动到最下面
     }
 
     /**
@@ -295,14 +293,14 @@
         //如果是：则 1.直接向该div追加会话条目 2.用ajax（fetch）向后台发送已读信息
         //否：在在线列表对应的联系人展现红点提示以及出现右下角弹窗提示
 
-        var to = message.to == null || message.to === "" ? "全体成员" : message.to;   //获取接收人
+        var to = message.to == null || message.to === "" ? "" : message.to;   //获取接收人
 
         var from = message.from;
 
         var chatdiv = $("#chat-view-main").children(".am-scrollable-vertical")[0];
         //确定再当前聊天页面
         if (chatdiv.id.indexOf('${userid}') >= 0 && chatdiv.id.indexOf(to) >= 0) {
-            //确定接受者是当前用户
+            //确定接受者是当前用户(单向已读，不会出现发送方发送消息后，对方就显示已读)
             if (to === '${userid}') {
                 $.ajax({
                     url: "${pageContext.request.contextPath}/user/readRecords",
@@ -322,15 +320,13 @@
                 "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">" + message.from + "</a> 发表于<time> " + message.time + "</time> 发送给: " + to + " </div></header><div class=\"am-comment-bd\"> <p>" + message.content + "</p></div></div></li>";
             $("#chat").append(html);
             $("#message").val("");  //清空输入区
-            var chat = $("#chat-view-main").children(".am-scrollable-vertical");
-            chat.scrollTop(chat[0].scrollHeight);   //让聊天区始终滚动到最下面
+            divToTheEnd();   //让聊天区始终滚动到最下面
 
-        } else {
+        } else if (to !== "") {
             //获取接收者的<li>
             var userli = $("#" + from + "");
-            if (flag === 0) {
+            if (userli[0].innerHTML.indexOf("layui-badge-dot") < 0) {
                 userli.append("<span class=\"layui-badge-dot\" id=\"" + from + "-dot\"></span>");
-                flag = 1;
             }
             //弹窗提示
             layer.msg("来自" + from + "的消息！", {
@@ -361,19 +357,22 @@
      * @param message
      */
     function tuling(message) {
-        var html;
+        var receive_html;
         $.getJSON("http://www.tuling123.com/openapi/api?key=16e2d9f3ea554600ba167108c68e9b2f&info=" + message, function (data) {
             if (data.code === 100000) {
-                html = "<li class=\"am-comment am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/static/img/robot.jpg\"></a><div class=\"am-comment-main\">\n" +
+                receive_html = "<li class=\"am-comment am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/static/img/robot.jpg\"></a><div class=\"am-comment-main\">\n" +
                     "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">Robot</a> 发表于<time> " + getDateFull() + "</time> 发送给: ${userid}</div></header><div class=\"am-comment-bd\"> <p>" + data.text + "</p></div></div></li>";
             }
             if (data.code === 200000) {
-                html = "<li class=\"am-comment am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/static/img/robot.jpg\"></a><div class=\"am-comment-main\">\n" +
+                receive_html = "<li class=\"am-comment am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/static/img/robot.jpg\"></a><div class=\"am-comment-main\">\n" +
                     "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">Robot</a> 发表于<time> " + getDateFull() + "</time> 发送给: ${userid}</div></header><div class=\"am-comment-bd\"> <p>" + data.text + "</p><a href=\"" + data.url + "\" target=\"_blank\">" + data.url + "</a></div></div></li>";
             }
-            $("#chat").append(html);
-            var chat = $("#chat-view-main").children(".am-scrollable-vertical");
-            chat.scrollTop(chat[0].scrollHeight);
+            var isSef = "am-comment-flip";   //如果是自己则显示在右边,他人信息显示在左边
+            var send_html = "<li class=\"am-comment " + isSef + " am-comment-primary\"><a href=\"#link-to-user-home\"><img width=\"48\" height=\"48\" class=\"am-comment-avatar\" alt=\"\" src=\"${ctx}/" + '${userid}' + "/head\"></a><div class=\"am-comment-main\">\n" +
+                "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">" + '${userid}' + "</a> 发表于<time> " + getDateFull() + "</time> 发送给: " + "Robot" + " </div></header><div class=\"am-comment-bd\"> <p>" + message + "</p></div></div></li>";
+            $("#chat").append(send_html);
+            $("#chat").append(receive_html);
+            divToTheEnd();
             $("#message").val("");  //清空输入区
         });
     }
@@ -391,7 +390,6 @@
 
         //消除未读提示（小红点）
         $("#" + user + "-dot").remove();
-        flag = 0;
         layer.load(2);
         //添加加载动画
         setTimeout(function () {
@@ -411,7 +409,7 @@
                 dataType: "json",
                 success: function (data) {
                     var chat = $("#chat");
-                    chat.html("");
+                    clearConsole();
                     // layer.open({
                     //     title: '在线调试',
                     //     content: data[0].content+'--'+data[1].content
@@ -422,12 +420,10 @@
                             "<header class=\"am-comment-hd\"><div class=\"am-comment-meta\">   <a class=\"am-comment-author\" href=\"#link-to-user\">" + data[i].fromUserId + "</a> 发表于<time> " + data[i].recordCreateTime + "</time> 发送给: " + data[i].toUserId + " </div></header><div class=\"am-comment-bd\"> <p>" + data[i].content + "</p></div></div></li>";
                         chat.append(html);
                     }
-                    var chat = $("#chat-view-main").children(".am-scrollable-vertical");
-                    chat.scrollTop(chat[0].scrollHeight);   //让聊天区始终滚动到最下面
+                    divToTheEnd();
                 },
                 error: function () {
-                    var chat = $("#chat");
-                    chat.html("");
+                    clearConsole();
                     // layer.open({
                     //     title: '在线调试',
                     //     content: '空记录！'
@@ -465,6 +461,14 @@
         return date.getFullYear() + "-" + appendZero(date.getMonth() + 1) + "-" +
             appendZero(date.getDate()) + " " + appendZero(date.getHours()) + ":" +
             appendZero(date.getMinutes()) + ":" + appendZero(date.getSeconds());
+    }
+
+    /**
+     * div至底
+     */
+    function divToTheEnd() {
+        var chat = $("#chat-view-main").children(".am-scrollable-vertical");
+        chat.scrollTop(chat[0].scrollHeight);   //让聊天区始终滚动到最下面
     }
 </script>
 </body>

@@ -27,8 +27,12 @@ public class RegController {
      * 头像注册后补全信息
      */
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public RegController(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
      * 注册
@@ -55,10 +59,6 @@ public class RegController {
         attributes.addFlashAttribute("user", user);
         return "redirect:/register";
     }
-    /**
-     * @RequestParam("username") String userid, @RequestParam("password") String pwd,
-     @RequestParam("nickname") String nickName, @RequestParam("sex")int userSex
-     */
 
     /**
      * 拼装user
@@ -67,7 +67,7 @@ public class RegController {
      * @param pwd      密码
      * @param nickName 昵称
      * @param userSex  性别
-     * @return
+     * @return TBUser
      */
     private TbUser setUser(String userid, String pwd, String nickName, Integer userSex) {
         TbUser user = new TbUser();
