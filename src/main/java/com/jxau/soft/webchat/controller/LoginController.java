@@ -5,6 +5,7 @@ import com.jxau.soft.webchat.pojo.TbLog;
 import com.jxau.soft.webchat.pojo.TbUser;
 import com.jxau.soft.webchat.service.LogService;
 import com.jxau.soft.webchat.service.UserService;
+import com.jxau.soft.webchat.utils.LogUtil;
 import com.jxau.soft.webchat.utils.NetUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,12 +37,6 @@ public class LoginController {
     }
 
     /**
-     * 存在不恰当处：
-     * 应该先验证可登陆状态state：0、1
-     * 0：直接禁止登陆
-     */
-
-    /**
      * 登录
      *
      * @param userid     用户名
@@ -68,7 +63,7 @@ public class LoginController {
                     attributes.addFlashAttribute("error", WordDefined.LOGIN_USERID_DISABLED.getWordDefined());
                     return "redirect:/user/login";
                 } else {
-                    logService.insert(setLog(userid, new Date(), WordDefined.LOG_TYPE_LOGIN.getWordDefined(),
+                    logService.insert(LogUtil.setLog(userid, new Date(), WordDefined.LOG_TYPE_LOGIN.getWordDefined(),
                             WordDefined.LOG_DETAIL_USER_LOGIN.getWordDefined(), netUtil.getIpAddress(request)));
                     session.setAttribute("userid", userid);
                     session.setAttribute("login_status", true);
@@ -95,27 +90,5 @@ public class LoginController {
         session.removeAttribute("login_status");
         attributes.addFlashAttribute("message", WordDefined.LOGOUT_SUCCESS.getWordDefined());
         return "redirect:/user/login";
-    }
-
-    /**
-     * 补全log
-     *
-     * @param userid userid
-     * @param time   time
-     * @param type   type
-     * @param detail detal
-     * @param ip     ip
-     * @return
-     */
-    private TbLog setLog(String userid, Date time, String type, String detail, String ip) {
-        TbLog log = new TbLog();
-        String id = UUID.randomUUID().toString().replace("-", "");
-        log.setLogId(id);
-        log.setLogUserId(userid);
-        log.setLogCreateTime(time);
-        log.setLogType(type);
-        log.setLogDetail(detail);
-        log.setIp(ip);
-        return log;
     }
 }

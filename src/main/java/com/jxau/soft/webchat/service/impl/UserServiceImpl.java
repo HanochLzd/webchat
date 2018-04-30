@@ -13,8 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final TbUserMapper tbUserMapper;
+
     @Autowired
-    private TbUserMapper tbUserMapper;
+    public UserServiceImpl(TbUserMapper tbUserMapper) {
+        this.tbUserMapper = tbUserMapper;
+    }
 
     @Override
     public TbUser queryUserByUserid(String userid) {
@@ -23,8 +27,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(TbUser user) {
-        tbUserMapper.updateByPrimaryKey(user);
+    public int update(TbUser user) {
+        return tbUserMapper.updateByPrimaryKeySelective(user);
     }
 
     @Override

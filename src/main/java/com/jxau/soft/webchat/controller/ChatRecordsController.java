@@ -137,7 +137,7 @@ public class ChatRecordsController {
     /**
      * 转换成指定日期格式
      *
-     * @param recordCreateTime recordCreateTime
+     * @param recordCreateTime UTC
      * @return yyyy-MM-dd kk:mm:ss
      */
     private String setFormateDate(Date recordCreateTime) {

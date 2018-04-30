@@ -35,14 +35,14 @@
                         <div class="am-form-group">
                             <label for="userid" class="am-u-sm-2 am-form-label">用户名</label>
                             <div class="am-u-sm-10">
-                                <input type="text" id="userid" name="userid" value="${user.userId}" disabled>
+                                <input type="text" id="userid" name="userId" value="${user.userId}" readonly="readonly">
                             </div>
                         </div>
 
                         <div class="am-form-group">
                             <label for="nickname" class="am-u-sm-2 am-form-label">昵称</label>
                             <div class="am-u-sm-10">
-                                <input type="text" id="nickname" name="nickname" value="${user.userNickName}" required
+                                <input type="text" id="nickname" name="userNickName" value="${user.userNickName}" required
                                        placeholder="这里输入你的昵称...">
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                         <div class="am-form-group">
                             <label for="sex" class="am-u-sm-2 am-form-label">性别</label>
                             <div class="am-u-sm-10">
-                                <select id="sex" name="sex" data-am-selected>
+                                <select id="sex" name="userSex" data-am-selected>
                                     <option selected></option>
                                     <option value="1">男</option>
                                     <option value="2">女</option>
@@ -64,14 +64,14 @@
                         <div class="am-form-group">
                             <label for="age" class="am-u-sm-2 am-form-label">年龄</label>
                             <div class="am-u-sm-10">
-                                <input type="number" id="age" name="age" min="1" max="100" value="${user.userAge}"
+                                <input type="number" id="age" name="userAge" min="1" max="100" value="${user.userAge}"
                                        placeholder="这里输入你的年龄...">
                             </div>
                         </div>
                         <div class="am-form-group">
                             <label for="profile" class="am-u-sm-2 am-form-label">个性签名</label>
                             <div class="am-u-sm-10">
-                                <textarea class="" id="profile" name="profile" rows="5"
+                                <textarea class="" id="profile" name="userProfile" rows="5"
                                           placeholder="这里可以写下你的个性签名..."></textarea>
                             </div>
                             <script>

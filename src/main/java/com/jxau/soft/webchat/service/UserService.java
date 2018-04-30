@@ -19,7 +19,7 @@ public interface UserService {
      * 更新user信息
      * @param user
      */
-    void update(TbUser user);
+    int update(TbUser user);
 
     /**
      * 添加用户

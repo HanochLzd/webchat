@@ -6,7 +6,7 @@
 <head>
     <title>WebChat | 登陆</title>
     <link href="<%=path%>/static/source/css/login.css" rel='stylesheet' type='text/css'/>
-    <script src="<%=path%>/static/plugins/jquery/jquery-2.1.4.min.js"></script>
+    <script src="<%=path%>/static/plugins/jquery/jquery-3.3.1.min.js"></script>
     <script src="<%=path%>/static/plugins/layer/layer.js"></script>
 </head>
 <body>

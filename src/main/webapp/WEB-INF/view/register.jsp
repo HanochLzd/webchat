@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link href="<%=path%>/static/source/css/layui.css" rel='stylesheet' type='text/css'/>
     <link href="<%=path%>/static/source/css/global.css" rel='stylesheet' type='text/css'/>
-    <script src="<%=path%>/static/plugins/jquery/jquery-2.1.4.min.js"></script>
+    <script src="<%=path%>/static/plugins/jquery/jquery-3.3.1.min.js"></script>
     <script src="<%=path%>/static/plugins/layer/layer.js"></script>
     <script src="<%=path%>/static/plugins/layer/layui.js" charset="utf-8"></script>
 </head>
