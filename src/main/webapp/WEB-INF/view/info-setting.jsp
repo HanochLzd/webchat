@@ -42,7 +42,8 @@
                         <div class="am-form-group">
                             <label for="nickname" class="am-u-sm-2 am-form-label">昵称</label>
                             <div class="am-u-sm-10">
-                                <input type="text" id="nickname" name="userNickName" value="${user.userNickName}" required
+                                <input type="text" id="nickname" name="userNickName" value="${user.userNickName}"
+                                       required
                                        placeholder="这里输入你的昵称...">
                             </div>
                         </div>
@@ -89,12 +90,12 @@
                 </div>
 
                 <div class="am-tab-panel am-fade" id="tab2">
-                    <form class="am-form am-form-horizontal" action="${ctx}/${userId}/upload"
+                    <form class="am-form am-form-horizontal" action="${ctx}/${userid}/upload"
                           enctype="multipart/form-data" method="post" onsubmit="return checkFileType();"
                           style="text-align: center;">
                         <div style="text-align: center;margin-bottom: 10px">
                             <img class="am-circle" src="${ctx}/${user.userProfilehead}" width="140" height="140"
-                                 alt="Amayadream"/>
+                                 alt="${user.userId}"/>
                         </div>
                         <div class="am-form-group am-form-file">
                             <button type="button" class="am-btn am-btn-secondary am-btn-sm">
@@ -121,7 +122,7 @@
                 </div>
 
                 <div class="am-tab-panel am-fade" id="tab3">
-                    <form class="am-form am-form-horizontal" data-am-validator action="${ctx}/${userId}/pass"
+                    <form class="am-form am-form-horizontal" data-am-validator action="${ctx}/${userid}/pass"
                           method="post">
                         <div class="am-form-group">
                             <label for="password1" class="am-u-sm-2 am-form-label">原密码</label>
@@ -180,7 +181,7 @@
         var format = ["bmp", "jpg", "gif", "png"];
         var filename = $("#file").val();
         var ext = filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
-        if (jQuery.inArray(ext, format) != -1) {
+        if (jQuery.inArray(ext, format) !== -1) {
             return true;
         } else {
             layer.msg('头像格式只能是bmp,jpg,gif,png!', {

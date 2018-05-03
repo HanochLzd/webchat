@@ -22,7 +22,7 @@ public class UserServiceTest {
     @Test
     public void update() {
         TbUser user = new TbUser();
-        user.setUserId("test2");
+        user.setUserId("test132");
         //user.getUserAge();
         //user.setUserAge(2);
         user.setUserStatus(1);

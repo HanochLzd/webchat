@@ -9,22 +9,26 @@ import com.jxau.soft.webchat.pojo.TbUser;
 public interface UserService {
 
     /**
-     *根据id查询user
-     * @param userid
-     * @return
+     * 根据id查询user
+     *
+     * @param userid userid
+     * @return TbUser
      */
     TbUser queryUserByUserid(String userid);
 
     /**
      * 更新user信息
-     * @param user
+     *
+     * @param user user
+     * @return int
      */
     int update(TbUser user);
 
     /**
      * 添加用户
-     * @param tbUser
-     * @return
+     *
+     * @param tbUser tbUser
+     * @return int
      */
     int addOne(TbUser tbUser);
 }

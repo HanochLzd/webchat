@@ -123,7 +123,7 @@
     select 
     <include refid="Base_Column_List" />
     from tb_user
-    where user_id = #{userId,jdbcType=VARCHAR}
+    where user_id = binary #{userId,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--

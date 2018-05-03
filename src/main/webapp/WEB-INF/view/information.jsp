@@ -31,7 +31,7 @@
                             ${user.userNickName}
                         </div>
                         <div class="am-u-md-6" style="float: right">
-                            <img class="am-circle" src="${user.userProfilehead}" width="140" height="140"
+                            <img class="am-circle" src="${ctx}/${user.userProfilehead}" width="140" height="140"
                                  alt="${user.userNickName}"/>
                         </div>
 
