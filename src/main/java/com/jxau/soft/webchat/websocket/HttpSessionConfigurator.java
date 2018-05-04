@@ -16,9 +16,9 @@ public class HttpSessionConfigurator extends ServerEndpointConfig.Configurator {
      * 我正在尝试在握手过程中发送自定义标题。我可以用ServerEndpointConfig.Configurator拦截握手，
      * 并覆盖modifyHandshake
      *
-     * @param sec
-     * @param request
-     * @param response
+     * @param sec ServerEndpointConfig
+     * @param request HandshakeRequest
+     * @param response HandshakeResponse
      */
     @Override
     public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {

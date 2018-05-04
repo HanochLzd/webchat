@@ -32,26 +32,22 @@ public class ChatServer {
      * 用户名
      */
     private String userid;
-    /**
-     * request的session
-     */
-    private HttpSession httpSession;
 
     /**
      * 在线列表,记录用户名称
      */
-    private static List list = new ArrayList<>();
+    private static List<String> list = new ArrayList<>();
 
     /**
      * 用户名和 websocket的session绑定的路由表
      */
-    private static Map routetab = new HashMap<>();
+    private static Map<String, Session> routetab = new HashMap<>();
 
     /**
      * 连接建立成功调用的方法
      *
      * @param session 可选的参数。session为与某个客户端的连接会话，需要通过它来给客户端发送数据
-     * @param config
+     * @param config EndpointConfig
      */
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
@@ -59,7 +55,8 @@ public class ChatServer {
         //把当前连接存入webSocket中
         webSocketSet.add(this);
         addOnLineCount();
-        this.httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
+        //request的session
+        HttpSession httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
         this.userid = (String) httpSession.getAttribute("userid");
         //在线列表,记录用户名称
         list.add(userid);
@@ -67,7 +64,6 @@ public class ChatServer {
         String message = getMessage("[" + userid + "]加入聊天室,当前在线人数为" + getOnlineCount() + "位", "notice", list);
         //广播推送消息
         broadcast(message);
-
     }
 
     /**
@@ -88,23 +84,23 @@ public class ChatServer {
     /**
      * 接收客户端传来的消息message，判断是否有接收人而选择广播还是指定发送
      *
-     * @param _message 客户端发送过来的消息
+     * @param message 客户端发送过来的消息
      */
     @OnMessage
-    public void onMassage(String _message) {
-        JSONObject chat = JSON.parseObject(_message);
-        JSONObject message = JSON.parseObject(chat.get("message").toString());
+    public void onMassage(String message) {
+        JSONObject chat = JSON.parseObject(message);
+        JSONObject jsonMessage = JSON.parseObject(chat.get("message").toString());
         //如果to为空，广播发送；否则指定发送
-        if (message.get("to") == null || message.get("to").equals("")) {
-            broadcast(_message);
+        if (jsonMessage.get("to") == null || "".equals(jsonMessage.get("to"))) {
+            broadcast(message);
         } else {
-            String[] userList = message.get("to").toString().split(",");
+            String[] userList = jsonMessage.get("to").toString().split(",");
             //发送给自己
-            singleSend(_message, (Session) routetab.get(message.get("from")));
+            singleSend(message, routetab.get(jsonMessage.get("from").toString()));
             //分别发送给指定用户
             for (String user : userList) {
-                if (!user.equals(message.get("from"))) {
-                    singleSend(_message, (Session) routetab.get(user));
+                if (!user.equals(jsonMessage.get("from"))) {
+                    singleSend(message, routetab.get(user));
                 }
             }
         }
@@ -125,13 +121,12 @@ public class ChatServer {
      *
      * @param message 广播消息
      */
-    public void broadcast(String message) {
+    private void broadcast(String message) {
         for (ChatServer chat : webSocketSet) {
             try {
                 chat.session.getBasicRemote().sendText(message);
             } catch (IOException e) {
                 e.printStackTrace();
-                continue;
             }
         }
     }
@@ -142,11 +137,11 @@ public class ChatServer {
      * @param message 发送的信息
      * @param session 与某个客户端的连接会话
      */
-    public void singleSend(String message, Session session) {
+    private void singleSend(String message, Session session) {
         try {
             session.getBasicRemote().sendText(message);
         } catch (IOException e) {
-            e.printStackTrace();
+            onError(e);
         }
     }
 
@@ -156,9 +151,9 @@ public class ChatServer {
      * @param message 交互信息
      * @param type    信息类型
      * @param list    在线列表
-     * @return
+     * @return String
      */
-    public String getMessage(String message, String type, List list) {
+    private String getMessage(String message, String type, List list) {
         JSONObject member = new JSONObject();
         member.put("message", message);
         member.put("type", type);
@@ -166,7 +161,7 @@ public class ChatServer {
         return member.toString();
     }
 
-    public int getOnlineCount() {
+    private int getOnlineCount() {
         return onlineCount;
     }
 
