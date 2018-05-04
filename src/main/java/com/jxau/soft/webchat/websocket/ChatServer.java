@@ -15,6 +15,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * @author Hanoch
+ * TODO:重新设计，加入好友系统，1.能够接收好友请求 2.展示分组、好友在线离线状态 3.接收好友消息 4.创建群聊并接收群聊消息
  */
 @ServerEndpoint(value = "/chatServer", configurator = HttpSessionConfigurator.class)
 public class ChatServer {
