@@ -325,7 +325,7 @@
         } else if (to !== "") {
             //获取接收者的<li>
             var userli = $("#" + from + "");
-            if (userli[0].innerHTML.indexOf("layui-badge-dot") < 0) {
+            if (userli[0] != null && userli[0].innerHTML.indexOf("layui-badge-dot") < 0) {
                 userli.append("<span class=\"layui-badge-dot\" id=\"" + from + "-dot\"></span>");
             }
             //弹窗提示
@@ -469,6 +469,15 @@
     function divToTheEnd() {
         var chat = $("#chat-view-main").children(".am-scrollable-vertical");
         chat.scrollTop(chat[0].scrollHeight);   //让聊天区始终滚动到最下面
+    }
+
+    /**
+     * 避免切换页面出现IOException
+     * @param event
+     */
+    window.onbeforeunload = function (event) {
+        //console.log("关闭WebSocket连接！");
+        closeConnection();
     }
 </script>
 </body>
