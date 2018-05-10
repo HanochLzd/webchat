@@ -77,26 +77,36 @@
     function checkLoginForm() {
         var username = $('#username').val();
         var password = $('#password').val();
-        if (isNull(username) && isNull(password)) {
-            $('#submit').attr('value', '请输入账号和密码!!!').css('background', 'red');
-            return false;
-        }
-        if (isNull(username)) {
-            $('#submit').attr('value', '请输入账号!!!').css('background', 'red');
-            return false;
-        }
-        if (isNull(password)) {
-            $('#submit').attr('value', '请输入密码!!!').css('background', 'red');
-            return false;
-        }
-        //if(username != 'Amaya' || password != '123456'){
-        //	$('#submit').attr('value','账号或密码错误!!!').css('background','red');
-        //	return false;
-        //}
-        else {
-            $('#submit').attr('value', 'Logining~');
-            return true;
-        }
+
+        var loading = layer.msg('加载中', {
+            icon: 16
+            ,shade: 0.01
+        });
+        //此处用setTimeout演示ajax的回调
+        setTimeout(function(){
+
+            if (isNull(username) && isNull(password)) {
+                $('#submit').attr('value', '请输入账号和密码!!!').css('background', 'red');
+                return false;
+            }
+            if (isNull(username)) {
+                $('#submit').attr('value', '请输入账号!!!').css('background', 'red');
+                return false;
+            }
+            if (isNull(password)) {
+                $('#submit').attr('value', '请输入密码!!!').css('background', 'red');
+                return false;
+            }
+            //if(username != 'Amaya' || password != '123456'){
+            //	$('#submit').attr('value','账号或密码错误!!!').css('background','red');
+            //	return false;
+            //}
+            else {
+                $('#submit').attr('value', 'Logining~');
+                layer.close(loading);
+                return true;
+            }
+        },1000);
     }
 
     /**
