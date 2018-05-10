@@ -27,6 +27,7 @@
             <!-- 需要排除拦截的地址 -->
             <mvc:exclude-mapping path="/static/**"/>
             <mvc:exclude-mapping path="/register"/>
+            <mvc:exclude-mapping path="/include"/>
             <bean id="loginInterceptor" class="com.jxau.soft.webchat.interceptor.LoginInterceptor">
                 <property name="IGNORE_URI">
                     <list>

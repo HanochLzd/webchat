@@ -40,4 +40,18 @@ public class PageController {
         return "log";
     }
 
+    @RequestMapping(value = "/include/header")
+    public String header(){
+        return "include/header";
+    }
+
+    @RequestMapping(value = "/include/sidebar")
+    public String siderbar(){
+        return "include/sidebar";
+    }
+
+    @RequestMapping(value = "/chatPage")
+    public String chatPage(){
+        return "chat";
+    }
 }

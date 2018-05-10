@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<%--<jsp:include page="commonfile.jsp"/>--%>
 <header class="am-topbar admin-header">
     <div class="am-topbar-brand">
         <i class="am-icon-weixin"></i> <strong>WebChat</strong> <small>网页聊天室</small>
@@ -21,3 +22,11 @@
         </ul>
     </div>
 </header>
+
+<script>
+    <%--var ws;--%>
+    <%--if(null == ws){--%>
+       <%--var wsServer = "ws://" + location.host + "${pageContext.request.contextPath}" + "/chatServer";--%>
+        <%--ws = new WebSocket(wsServer); //创建WebSocket对象--%>
+    <%--}--%>
+</script>

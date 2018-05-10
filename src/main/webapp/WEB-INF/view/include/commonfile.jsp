@@ -12,5 +12,7 @@
 <script src="${ctx}/static/plugins/laypage/laypage.js"></script>
 <script src="${ctx}/static/plugins/contextjs/js/context.js"></script>
 <script>
-    var path = '${ctx}';
+    var path;
+    path = '${ctx}';
+
 </script>
