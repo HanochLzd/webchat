@@ -1,15 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
-<html>
-<head>
-    <title>WebChat | 关于</title>
+<%--<html>--%>
+<%--<head>--%>
+    <%--<title>WebChat | 关于</title>--%>
     <jsp:include page="include/commonfile.jsp"/>
-</head>
-<body>
-<jsp:include page="include/header.jsp"/>
-<div class="am-cf admin-main">
-    <jsp:include page="include/sidebar.jsp"/>
+<%--</head>--%>
+<%--<body>--%>
+<%--<jsp:include page="include/header.jsp"/>--%>
+<%--<div class="am-cf admin-main">--%>
+    <%--<jsp:include page="include/sidebar.jsp"/>--%>
 
     <!-- content start -->
     <div class="admin-content">
@@ -54,6 +54,6 @@
     <a href="#" class="am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}">
         <span class="am-icon-btn am-icon-th-list"></span>
     </a>
-    <jsp:include page="include/footer.jsp"/>
-</body>
-</html>
+    <%--<jsp:include page="include/footer.jsp"/>--%>
+<%--</body>--%>
+<%--</html>--%>

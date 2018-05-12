@@ -97,6 +97,30 @@
                 }
             }
         ]);
+
+        $('#about').on('click', function(){
+            layer.open({
+                type: 2,
+                title: '关于',
+                maxmin: false,
+                shadeClose: true, //点击遮罩关闭层
+                area : ['800px' , '520px'],
+                content: '${ctx}/about'
+            });
+        });
+
+        $("#userconfig").on('click', function(){
+            layer.open({
+                type: 2,
+                title: '个人设置',
+                resize:false,
+                maxmin: false,
+                shadeClose: true, //点击遮罩关闭层
+                area : ['800px' , '580px'],
+                content: ['${ctx}/${userid}/config','yes']
+            });
+        });
+
     });
     if ("${message}") {
         layer.msg('${message}', {
