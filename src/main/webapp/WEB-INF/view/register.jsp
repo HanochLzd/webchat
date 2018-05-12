@@ -1,17 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%String path = request.getContextPath();%>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
     <title>WebChat | 注册</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <link href="<%=path%>/static/source/css/layui.css" rel='stylesheet' type='text/css'/>
-    <link href="<%=path%>/static/source/css/global.css" rel='stylesheet' type='text/css'/>
-    <script src="<%=path%>/static/plugins/jquery/jquery-3.3.1.min.js"></script>
-    <script src="<%=path%>/static/plugins/layer/layer.js"></script>
-    <script src="<%=path%>/static/plugins/layer/layui.js" charset="utf-8"></script>
+    <link href="${ctx}/static/source/css/layui.css" rel='stylesheet' type='text/css'/>
+    <link href="${ctx}/static/source/css/global.css" rel='stylesheet' type='text/css'/>
+    <script src="${ctx}/static/plugins/jquery/jquery-3.3.1.min.js"></script>
+    <script src="${ctx}/static/plugins/layer/layer.js"></script>
+    <script src="${ctx}/static/plugins/layer/layer.js"></script>
+    <script src="${ctx}/static/plugins/layer/layui.js" charset="utf-8"></script>
 </head>
 <body>
 
@@ -63,17 +64,17 @@
                                 </div>
                             </div>
                             <div class="layui-form-item">
-                                <label for="L_pass" class="layui-form-label">密码</label>
+                                <label for="Lpass" class="layui-form-label">密码</label>
                                 <div class="layui-input-inline">
-                                    <input type="password" id="L_pass" name="password" required lay-verify="pass"
+                                    <input type="password" id="Lpass" name="password" required lay-verify="pass"
                                            autocomplete="off" class="layui-input">
                                 </div>
                                 <div class="layui-form-mid layui-word-aux">6到16个字符</div>
                             </div>
                             <div class="layui-form-item">
-                                <label for="L_repass" class="layui-form-label">确认密码</label>
+                                <label for="Lrepass" class="layui-form-label">确认密码</label>
                                 <div class="layui-input-inline">
-                                    <input type="password" id="L_repass" name="repassword" required lay-verify="pass"
+                                    <input type="password" id="Lrepass" name="repassword" required lay-verify="repass"
                                            autocomplete="off" class="layui-input">
                                 </div>
                             </div>
@@ -113,9 +114,21 @@
                     if (value.length < 2) {
                         return 'ID至少得3个字符啊';
                     }
+                },
+                pass: function (value) {
+                    if (value.length < 6 || value.length > 12) {
+                        return '密码必须6到12位，且不能出现空格';
+                    }
+                },
+                repass: function (value) {
+                    if (value.length < 6 || value.length > 12) {
+                        return '密码必须6到12位，且不能出现空格';
+                    }
+                    var pwd = $("#Lpass").val();
+                    if (!new RegExp(pwd).test(value)) {
+                        return '两次输入的密码不一致';
+                    }
                 }
-                , pass: [/(.+){6,12}$/, '密码必须6到12位']
-
             });
         });
         if ("${error}") {
@@ -130,7 +143,7 @@
                 content: 'ID:${user.userId}',
                 move: false,
                 yes: function (index) {
-                    location.href = '${pageContext.request.contextPath}/user/login';
+                    location.href = '${ctx}/user/login';
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
                 }
             });

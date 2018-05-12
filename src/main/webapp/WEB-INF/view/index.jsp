@@ -98,29 +98,78 @@
             }
         ]);
 
-        $('#about').on('click', function(){
+        //关于
+        $('#about').on('click', function () {
             layer.open({
                 type: 2,
                 title: '关于',
                 maxmin: false,
                 shadeClose: true, //点击遮罩关闭层
-                area : ['800px' , '520px'],
+                area: ['800px', '520px'],
                 content: '${ctx}/about'
             });
         });
 
-        $("#userconfig").on('click', function(){
+        //个人设置
+        $("#userconfig").on('click', function () {
             layer.open({
                 type: 2,
                 title: '个人设置',
-                resize:false,
+                resize: false,
                 maxmin: false,
                 shadeClose: true, //点击遮罩关闭层
-                area : ['800px' , '580px'],
-                content: ['${ctx}/${userid}/config','yes']
+                area: ['800px', '580px'],
+                content: ['${ctx}/${userid}/config', 'yes']
             });
         });
 
+        //个人信息
+        $('#userinfo').on('click', function () {
+            layer.open({
+                type: 2,
+                title: '个人信息',
+                maxmin: false,
+                shadeClose: true, //点击遮罩关闭层
+                area: ['1100px', '520px'],
+                content: '${ctx}/${userid}/info'
+            });
+        });
+
+        //系统设置
+        $('#systemsetting').on('click', function () {
+            layer.open({
+                type: 2,
+                title: '系统设置',
+                maxmin: false,
+                shadeClose: true, //点击遮罩关闭层
+                area: ['800px', '520px'],
+                content: '${ctx}/system-setting'
+            });
+        });
+
+        //系统日志
+        $('#adminlog').on('click', function () {
+            layer.open({
+                type: 2,
+                title: '系统日志',
+                maxmin: false,
+                shadeClose: true, //点击遮罩关闭层
+                area: ['800px', '520px'],
+                content: '${ctx}/admin/log'
+            });
+        });
+
+        //帮助
+        $('#help').on('click', function () {
+            layer.open({
+                type: 2,
+                title: '帮助',
+                maxmin: false,
+                shadeClose: true, //点击遮罩关闭层
+                area: ['800px', '520px'],
+                content: '${ctx}/help'
+            });
+        });
     });
     if ("${message}") {
         layer.msg('${message}', {
@@ -148,7 +197,7 @@
     });
     var wsServer = null;
     var ws = null;
-    wsServer = "ws://" + location.host + "${pageContext.request.contextPath}" + "/chatServer";
+    wsServer = "ws://" + location.host + "${ctx}" + "/chatServer";
     ws = new WebSocket(wsServer); //创建WebSocket对象
     ws.onopen = function (evt) {
         layer.msg("已经建立连接", {offset: 0});
@@ -240,7 +289,7 @@
         //加入emoji支持
         if (to !== "") {
             $.ajax({
-                url: "${pageContext.request.contextPath}/user/addRecord",
+                url: "${ctx}/user/addRecord",
                 type: "POST",
                 traditional: true,
                 contentType: "application/x-www-form-urlencoded;charset=utf-8",
@@ -327,7 +376,7 @@
             //确定接受者是当前用户(单向已读，不会出现发送方发送消息后，对方就显示已读)
             if (to === '${userid}') {
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/user/readRecords",
+                    url: "${ctx}/user/readRecords",
                     type: "POST",
                     traditional: true,
                     contentType: "application/x-www-form-urlencoded;charset=utf-8",
@@ -422,7 +471,7 @@
             chatdiv.children[0].id = '${userid}' + '-chat-view-' + user;
 
             $.ajax({
-                url: "${pageContext.request.contextPath}/user/records",
+                url: "${ctx}/user/records",
                 type: "POST",
                 traditional: true,
                 contentType: "application/x-www-form-urlencoded;charset=utf-8",

@@ -5,9 +5,9 @@
 <html>
 <head>
     <title>WebChat | 登陆</title>
+    <jsp:include page="include/commonfile.jsp"/>
     <link href="<%=path%>/static/source/css/login.css" rel='stylesheet' type='text/css'/>
-    <script src="<%=path%>/static/plugins/jquery/jquery-3.3.1.min.js"></script>
-    <script src="<%=path%>/static/plugins/layer/layer.js"></script>
+
 </head>
 <body>
 
@@ -80,10 +80,10 @@
 
         var loading = layer.msg('加载中', {
             icon: 16
-            ,shade: 0.01
+            , shade: 0.01
         });
         //此处用setTimeout演示ajax的回调
-        setTimeout(function(){
+        setTimeout(function () {
 
             if (isNull(username) && isNull(password)) {
                 $('#submit').attr('value', '请输入账号和密码!!!').css('background', 'red');
@@ -106,7 +106,7 @@
                 layer.close(loading);
                 return true;
             }
-        },1000);
+        }, 1000);
     }
 
     /**
