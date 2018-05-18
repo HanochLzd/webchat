@@ -17,7 +17,7 @@
     <div class="admin-content">
         <div class="" style="width: 80%;float:left;">
             <!-- 聊天区 -->
-            <div class="am-panel am-panel-default">
+            <div class="am-panel am-panel-default" style="margin: 0">
                 <div class="am-panel-hd">
                     XXX
                     <i class="am-icon-user am-icon-sm"></i>
@@ -25,13 +25,12 @@
                        onclick="clearConsole()"></i>
                     <i class="am-icon-star am-icon-sm" title="收藏" style="float:right;margin-right: 15px;cursor:pointer;"
                        onclick=""></i>
-
                 </div>
                 <%--<div class="am-panel-bd">--%>
                 <%--面板内容--%>
                 <%--</div>--%>
-                <div class="" id="chat-view-main">
-                    <div class="am-scrollable-vertical" id="chat-view" style="height: 510px;">
+                <div class="am-panel-bd" id="chat-view-main" style="height: 480px">
+                    <div class="am-scrollable-vertical" id="chat-view" style="height: 100%;width: 100%">
                         <ul class="am-comments-list am-comments-list-flip" id="chat">
                         </ul>
                     </div>
@@ -39,9 +38,22 @@
             </div>
 
             <!-- 输入区 -->
-            <div class="am-form-group am-form">
-                <textarea class="" id="message" name="message" rows="5" placeholder="这里输入你想发送的信息..."
-                          onkeydown="keyDown(event)"></textarea>
+            <div class="am-panel am-panel-default" style="margin: 0">
+                <div class="am-panel-hd">
+                    XXX
+                    <i class="am-icon-user am-icon-sm"></i>
+                    <i class="am-icon-trash am-icon-sm" title="清空消息" style="float:right;cursor:pointer;"
+                       onclick="clearConsole()"></i>
+                    <i class="am-icon-star am-icon-sm" title="收藏" style="float:right;margin-right: 15px;cursor:pointer;"
+                       onclick=""></i>
+                </div>
+                <div class="am-panel-bd" style="padding: 0;height: 130px">
+                    <div class="am-form-group am-form" style="height: 100%;width: 100%;margin: 0">
+                        <textarea class="" style="height: 100%" id="message" name="message" rows="5"
+                                  placeholder="这里输入你想发送的信息..."
+                                  onkeydown="keyDown(event)"></textarea>
+                    </div>
+                </div>
             </div>
             <!-- 接收者 -->
             <div class="" style="float: left">
