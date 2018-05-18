@@ -1,7 +1,7 @@
 package com.jxau.soft.webchat.service.impl;
 
 import com.jxau.soft.webchat.mapper.TbLogMapper;
-import com.jxau.soft.webchat.pojo.TbLog;
+import com.jxau.soft.webchat.po.TbLog;
 import com.jxau.soft.webchat.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

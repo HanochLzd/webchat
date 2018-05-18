@@ -1,7 +1,7 @@
 package com.jxau.soft.webchat.mapper;
 
-import com.jxau.soft.webchat.pojo.TbRecord;
-import com.jxau.soft.webchat.pojo.TbRecordExample;
+import com.jxau.soft.webchat.po.TbRecord;
+import com.jxau.soft.webchat.po.TbRecordExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

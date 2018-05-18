@@ -1,6 +1,6 @@
 package com.jxau.soft.webchat.utils;
 
-import com.jxau.soft.webchat.pojo.TbLog;
+import com.jxau.soft.webchat.po.TbLog;
 
 import java.util.Date;
 import java.util.UUID;

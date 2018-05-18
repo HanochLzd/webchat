@@ -1,7 +1,7 @@
 package com.jxau.soft.webchat.service.impl;
 
 import com.jxau.soft.webchat.mapper.TbUserMapper;
-import com.jxau.soft.webchat.pojo.TbUser;
+import com.jxau.soft.webchat.po.TbUser;
 import com.jxau.soft.webchat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

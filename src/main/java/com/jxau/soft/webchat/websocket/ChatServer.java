@@ -3,7 +3,6 @@ package com.jxau.soft.webchat.websocket;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jxau.soft.webchat.mapper.TbUserMapper;
-import com.jxau.soft.webchat.pojo.TbUser;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpSession;
@@ -54,7 +53,7 @@ public class ChatServer {
      * 连接建立成功调用的方法
      *
      * @param session 可选的参数。session为与某个客户端的连接会话，需要通过它来给客户端发送数据
-     * @param config EndpointConfig
+     * @param config  EndpointConfig
      */
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
@@ -68,7 +67,8 @@ public class ChatServer {
         //在线列表,记录用户名称
         list.add(userid);
         routetab.put(userid, session);
-        String message = getMessage("[" + userid + "]加入聊天室,当前在线人数为" + getOnlineCount() + "位", "notice", list);
+        String message = getMessage("[" + userid + "]加入聊天室,当前在线人数为" + getOnlineCount() + "位",
+                "notice", list);
         //广播推送消息
         broadcast(message);
     }
@@ -83,7 +83,8 @@ public class ChatServer {
         //从在线列表移除这个用户
         list.remove(userid);
         routetab.remove(userid);
-        String message = getMessage("[" + userid + "]离开了聊天室,当前在线人数为" + getOnlineCount() + "位", "notice", list);
+        String message = getMessage("[" + userid + "]离开了聊天室,当前在线人数为" + getOnlineCount() + "位",
+                "notice", list);
         //广播
         broadcast(message);
     }

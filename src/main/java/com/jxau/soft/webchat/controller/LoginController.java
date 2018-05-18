@@ -1,8 +1,7 @@
 package com.jxau.soft.webchat.controller;
 
 import com.jxau.soft.webchat.enums.WordDefined;
-import com.jxau.soft.webchat.pojo.TbLog;
-import com.jxau.soft.webchat.pojo.TbUser;
+import com.jxau.soft.webchat.po.TbUser;
 import com.jxau.soft.webchat.service.LogService;
 import com.jxau.soft.webchat.service.UserService;
 import com.jxau.soft.webchat.utils.LogUtil;
@@ -16,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * @author Hanoch

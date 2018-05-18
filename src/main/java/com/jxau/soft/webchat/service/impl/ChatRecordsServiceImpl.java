@@ -1,8 +1,8 @@
 package com.jxau.soft.webchat.service.impl;
 
 import com.jxau.soft.webchat.mapper.TbRecordMapper;
-import com.jxau.soft.webchat.pojo.TbRecord;
-import com.jxau.soft.webchat.pojo.TbRecordExample;
+import com.jxau.soft.webchat.po.TbRecord;
+import com.jxau.soft.webchat.po.TbRecordExample;
 import com.jxau.soft.webchat.service.ChatRecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package com.jxau.soft.webchat.controller;
 
 import com.jxau.soft.webchat.enums.WordDefined;
-import com.jxau.soft.webchat.pojo.TbUser;
+import com.jxau.soft.webchat.po.TbUser;
 import com.jxau.soft.webchat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

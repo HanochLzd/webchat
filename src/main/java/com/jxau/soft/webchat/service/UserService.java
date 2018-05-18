@@ -1,7 +1,7 @@
 package com.jxau.soft.webchat.service;
 
 
-import com.jxau.soft.webchat.pojo.TbUser;
+import com.jxau.soft.webchat.po.TbUser;
 
 /**
  * @author Hanoch
@@ -17,7 +17,7 @@ public interface UserService {
     TbUser queryUserByUserid(String userid);
 
     /**
-     * 更新user信息
+     * 更新user信息（个人资料、用户账号状态、用户登录状态）
      *
      * @param user user
      * @return int

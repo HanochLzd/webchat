@@ -1,6 +1,6 @@
 package com.jxau.soft.webchat.service;
 
-import com.jxau.soft.webchat.pojo.TbRecord;
+import com.jxau.soft.webchat.po.TbRecord;
 
 import java.util.List;
 

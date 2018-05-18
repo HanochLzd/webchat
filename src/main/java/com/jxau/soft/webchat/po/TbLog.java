@@ -1,4 +1,4 @@
-package com.jxau.soft.webchat.pojo;
+package com.jxau.soft.webchat.po;
 
 import java.io.Serializable;
 import java.util.Date;

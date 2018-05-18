@@ -1,6 +1,6 @@
 package com.jxau.soft.webchat.service;
 
-import com.jxau.soft.webchat.pojo.TbUser;
+import com.jxau.soft.webchat.po.TbUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

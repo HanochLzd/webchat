@@ -8,7 +8,7 @@ package com.jxau.soft.webchat.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.jxau.soft.webchat.pojo.TbRecord;
+import com.jxau.soft.webchat.po.TbRecord;
 import com.jxau.soft.webchat.service.ChatRecordsService;
 import com.jxau.soft.webchat.service.UserService;
 import com.vdurmont.emoji.EmojiParser;

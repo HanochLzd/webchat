@@ -1,6 +1,6 @@
 package com.jxau.soft.webchat.service;
 
-import com.jxau.soft.webchat.pojo.TbLog;
+import com.jxau.soft.webchat.po.TbLog;
 
 /**
  * @author Hanoch
