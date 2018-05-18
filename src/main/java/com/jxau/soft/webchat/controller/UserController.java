@@ -10,7 +10,6 @@ import com.jxau.soft.webchat.utils.UploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -18,7 +17,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 
@@ -49,14 +47,18 @@ public class UserController {
     /**
      * 显示个人信息
      *
-     * @param userid 用户id
+     * @param userid        userid
+     * @param sessionUserid sessionUserid
      * @return ModelAndView
      */
     @RequestMapping(value = "/{userid}/info", method = RequestMethod.GET)
-    public ModelAndView showOneDetails(@PathVariable("userid") String userid) {
-        ModelAndView view = new ModelAndView("information");
-        TbUser user = userService.queryUserByUserid(userid);
-        view.addObject("user", user);
+    public ModelAndView showOneDetails(@PathVariable("userid") String userid, @SessionAttribute("userid") String sessionUserid) {
+        ModelAndView view = null;
+        if (sessionUserid.equals(userid)) {
+            view = new ModelAndView("information");
+            TbUser user = userService.queryUserByUserid(userid);
+            view.addObject("user", user);
+        }
         return view;
     }
 
@@ -68,33 +70,41 @@ public class UserController {
      * @return String
      */
     @RequestMapping(value = "/{userid}/config", method = RequestMethod.GET)
-    public String userConfig(@PathVariable("userid") String userid, HttpServletRequest request) {
-        TbUser user = userService.queryUserByUserid(userid);
-        request.setAttribute("user", user);
-        return "info-setting";
+    public String userConfig(@PathVariable("userid") String userid, HttpServletRequest request,
+                             @SessionAttribute("userid") String sessionUserid) {
+        if (sessionUserid.equals(userid)) {
+            TbUser user = userService.queryUserByUserid(userid);
+            request.setAttribute("user", user);
+            return "info-setting";
+        }
+        return "redirect:/" + sessionUserid + "/config";
     }
 
     /**
      * 更新个人信息
      *
-     * @param userid     userid
-     * @param sessionId  sessionid
-     * @param user       user
-     * @param attributes RedirectAttributes
-     * @param netUtil    netUtil
-     * @param request    HttpServletRequest
+     * @param userid        userid
+     * @param sessionUserid sessionUserid
+     * @param user          user
+     * @param attributes    RedirectAttributes
+     * @param netUtil       netUtil
+     * @param request       HttpServletRequest
      * @return String
      */
     @RequestMapping(value = "/{userid}/update", method = RequestMethod.POST)
-    public String updateUser(@PathVariable("userid") String userid, @ModelAttribute("userid") String sessionId,
+    public String updateUser(@PathVariable("userid") String userid, @SessionAttribute("userid") String sessionUserid,
                              TbUser user, RedirectAttributes attributes, NetUtil netUtil, HttpServletRequest request) {
-        int flag = userService.update(user);
-        if (flag > 0) {
-            logService.insert(LogUtil.setLog(userid, new Date(), WordDefined.LOG_TYPE_UPDATE.getWordDefined(),
-                    WordDefined.LOG_DETAIL_UPDATE_PROFILE.getWordDefined(), netUtil.getIpAddress(request)));
-            attributes.addFlashAttribute("message", "[" + userid + "]资料更新成功!");
+        if (!user.getUserId().equals(sessionUserid)) {
+            attributes.addFlashAttribute("error", "非法更改！");
         } else {
-            attributes.addFlashAttribute("error", "[" + userid + "]资料更新失败!");
+            int flag = userService.update(user);
+            if (flag > 0) {
+                logService.insert(LogUtil.setLog(userid, new Date(), WordDefined.LOG_TYPE_UPDATE.getWordDefined(),
+                        WordDefined.LOG_DETAIL_UPDATE_PROFILE.getWordDefined(), netUtil.getIpAddress(request)));
+                attributes.addFlashAttribute("message", "[" + userid + "]资料更新成功!");
+            } else {
+                attributes.addFlashAttribute("error", "[" + userid + "]资料更新失败!");
+            }
         }
         return "redirect:/{userid}/config";
     }

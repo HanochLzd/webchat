@@ -17,12 +17,27 @@
     <div class="admin-content">
         <div class="" style="width: 80%;float:left;">
             <!-- 聊天区 -->
-            <div class="" id="chat-view-main">
-                <div class="am-scrollable-vertical" id="chat-view" style="height: 510px;">
-                    <ul class="am-comments-list am-comments-list-flip" id="chat">
-                    </ul>
+            <div class="am-panel am-panel-default">
+                <div class="am-panel-hd">
+                    XXX
+                    <i class="am-icon-user am-icon-sm"></i>
+                    <i class="am-icon-trash am-icon-sm" title="清空消息" style="float:right;cursor:pointer;"
+                       onclick="clearConsole()"></i>
+                    <i class="am-icon-star am-icon-sm" title="收藏" style="float:right;margin-right: 15px;cursor:pointer;"
+                       onclick=""></i>
+
+                </div>
+                <%--<div class="am-panel-bd">--%>
+                <%--面板内容--%>
+                <%--</div>--%>
+                <div class="" id="chat-view-main">
+                    <div class="am-scrollable-vertical" id="chat-view" style="height: 510px;">
+                        <ul class="am-comments-list am-comments-list-flip" id="chat">
+                        </ul>
+                    </div>
                 </div>
             </div>
+
             <!-- 输入区 -->
             <div class="am-form-group am-form">
                 <textarea class="" id="message" name="message" rows="5" placeholder="这里输入你想发送的信息..."
@@ -416,9 +431,9 @@
     function showOnline(list) {
         $("#list").html("");    //清空在线列表
         $.each(list, function (index, item) {     //添加私聊按钮
-            var li = "<li>" + item + "<span class=\"layui-badge-dot\"></span></li>";
+            var li = "<li><i class=\"am-icon-user am-icon-fw\"></i>" + item + "<span class=\"layui-badge-dot\"></span></li>";
             if ('${userid}' !== item) {    //排除自己
-                li = "<li id=\"" + item + "\">" + item + " <button type=\"button\" class=\"am-btn am-btn-xs am-btn-primary am-round\" onclick=\"addChat('" + item + "');\"><span class=\"am-icon-phone\"><span> 私聊</button></li>";
+                li = "<li id=\"" + item + "\"><i class=\"am-icon-user am-icon-fw\"></i>" + item + " <button type=\"button\" class=\"am-btn am-btn-xs am-btn-primary am-round\" onclick=\"addChat('" + item + "');\"><span class=\"am-icon-phone\"><span> 私聊</button></li>";
             }
             $("#list").append(li);
         });

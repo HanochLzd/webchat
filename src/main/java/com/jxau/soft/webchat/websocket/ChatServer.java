@@ -2,6 +2,9 @@ package com.jxau.soft.webchat.websocket;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.jxau.soft.webchat.mapper.TbUserMapper;
+import com.jxau.soft.webchat.pojo.TbUser;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
@@ -19,6 +22,10 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 @ServerEndpoint(value = "/chatServer", configurator = HttpSessionConfigurator.class)
 public class ChatServer {
+
+
+    @Autowired
+    private TbUserMapper userMapper;
     /**
      * 记录当前在线连接数
      */

@@ -40,4 +40,9 @@ public class PageController {
         return "log";
     }
 
+    @RequestMapping("/user/list")
+    public String userList(){
+        return "user-list";
+    }
+
 }
