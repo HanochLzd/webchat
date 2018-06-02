@@ -1,62 +1,46 @@
 package com.jxau.soft.webchat.service.impl;
 
 import com.jxau.soft.webchat.mapper.TbRelationMapper;
-import com.jxau.soft.webchat.mapper.TbUserMapper;
 import com.jxau.soft.webchat.po.TbRelation;
 import com.jxau.soft.webchat.po.TbRelationExample;
 import com.jxau.soft.webchat.po.TbUser;
 import com.jxau.soft.webchat.service.UserService;
 import com.jxau.soft.webchat.vo.Friend;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.management.relation.Relation;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Hanoch
- */
-@Service
-public class UserServiceImpl implements UserService {
+import static org.junit.Assert.*;
 
-    private final TbUserMapper tbUserMapper;
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath*:spring/applicationContext-*.xml"})
+public class UserServiceImplTest {
 
     @Autowired
     private TbRelationMapper relationMapper;
 
     @Autowired
-    public UserServiceImpl(TbUserMapper tbUserMapper) {
-        this.tbUserMapper = tbUserMapper;
-    }
+    private UserService userService;
 
-
-    @Override
-    public TbUser queryUserByUserid(String userid) {
-        return tbUserMapper.selectByPrimaryKey(userid);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public int update(TbUser user) {
-        return tbUserMapper.updateByPrimaryKeySelective(user);
-    }
-
-    @Override
-    @Transactional(rollbackFor = RuntimeException.class)
-    public int addOne(TbUser tbUser) {
-        return tbUserMapper.insert(tbUser);
-    }
-
-    @Override
-    public List<Friend> queryAllFriends(String onwerId) {
+    @Test
+    public void queryAllFriends() {
+//        List<Friend> friends =  userService.queryAllFriends("lzd");
+//        System.out.println(friends);
         TbRelationExample example = new TbRelationExample();
         TbRelationExample.Criteria criteria = example.createCriteria();
-        criteria.andOwnerUserEqualTo(onwerId);
+        criteria.andOwnerUserEqualTo("lzd");
         List<TbRelation> relations = relationMapper.selectByExample(example);
+        int relationsSize = relations.size();
         List<Friend> friends = new ArrayList<>();
         for (TbRelation relation : relations) {
-            TbUser friendUser = tbUserMapper.selectByPrimaryKey(relation.getFriendUser());
+            TbUser friendUser = userService.queryUserByUserid(relation.getFriendUser());
             Friend friend = new Friend();
             friend.setFriendId(relation.getFriendUser());
             friend.setFriendNickName(friendUser.getUserNickName());
@@ -65,6 +49,7 @@ public class UserServiceImpl implements UserService {
             friend.setGroup(relation.getGroup());
             friends.add(friend);
         }
-        return friends;
+        System.err.println(friends);
+
     }
 }

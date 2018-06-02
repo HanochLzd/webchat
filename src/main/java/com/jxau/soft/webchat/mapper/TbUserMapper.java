@@ -3,6 +3,8 @@ package com.jxau.soft.webchat.mapper;
 import com.jxau.soft.webchat.po.TbUser;
 import com.jxau.soft.webchat.po.TbUserExample;
 import java.util.List;
+
+import com.jxau.soft.webchat.vo.Friend;
 import org.apache.ibatis.annotations.Param;
 
 public interface TbUserMapper {
@@ -93,4 +95,11 @@ public interface TbUserMapper {
      * @mbg.generated Fri May 18 17:13:57 CST 2018
      */
     int updateByPrimaryKey(TbUser record);
+
+    /**
+     * 自己
+     * @param ownerId ownerId
+     * @return
+     */
+    List<Friend> selectFriendsByOwner(@Param("ownerid") String ownerId);
 }

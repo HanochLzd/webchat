@@ -1,11 +1,14 @@
 package com.jxau.soft.webchat.service;
 
 import com.jxau.soft.webchat.po.TbUser;
+import com.jxau.soft.webchat.vo.Friend;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -33,5 +36,11 @@ public class UserServiceTest {
 
     @Test
     public void addOne() {
+    }
+
+    @Test
+    public void queryAllFriends() {
+       List<Friend> friends =  userService.queryAllFriends("lzd");
+       System.out.println(friends);
     }
 }

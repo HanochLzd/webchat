@@ -6,6 +6,7 @@ import com.jxau.soft.webchat.service.LogService;
 import com.jxau.soft.webchat.service.UserService;
 import com.jxau.soft.webchat.utils.LogUtil;
 import com.jxau.soft.webchat.utils.NetUtil;
+import com.jxau.soft.webchat.vo.Friend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Hanoch
@@ -66,6 +68,7 @@ public class LoginController {
                     session.setAttribute("userid", userid);
                     session.setAttribute("login_status", true);
                     user.setUserLastTime(new Date());
+                    user.setUserLoginStatus(1);
                     userService.update(user);
                     attributes.addFlashAttribute("message", WordDefined.LOGIN_SUCCESS.getWordDefined());
                     return "redirect:/chat";

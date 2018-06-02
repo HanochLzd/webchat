@@ -7,6 +7,7 @@ import com.jxau.soft.webchat.service.UserService;
 import com.jxau.soft.webchat.utils.LogUtil;
 import com.jxau.soft.webchat.utils.NetUtil;
 import com.jxau.soft.webchat.utils.UploadUtil;
+import com.jxau.soft.webchat.vo.Friend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -40,8 +42,13 @@ public class UserController {
      * @return ModelAndView
      */
     @RequestMapping("/chat")
-    public ModelAndView getIndex() {
-        return new ModelAndView("index");
+    public ModelAndView getIndex(@SessionAttribute("userid")String userid,HttpServletRequest request) {
+        ModelAndView model = new ModelAndView("index");
+        //加载好友列表
+        List<Friend> friends = userService.queryAllFriends(userid);
+        System.err.println(friends);
+        request.setAttribute("friends",friends);
+        return model;
     }
 
     /**

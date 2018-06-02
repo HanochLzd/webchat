@@ -35,11 +35,6 @@ public class PageController {
         return "register";
     }
 
-    @RequestMapping(value = "/admin/log")
-    public String log() {
-        return "log";
-    }
-
     @RequestMapping("/user/list")
     public String userList(){
         return "user-list";

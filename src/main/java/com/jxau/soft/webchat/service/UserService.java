@@ -2,6 +2,10 @@ package com.jxau.soft.webchat.service;
 
 
 import com.jxau.soft.webchat.po.TbUser;
+import com.jxau.soft.webchat.vo.Friend;
+
+import java.io.FileReader;
+import java.util.List;
 
 /**
  * @author Hanoch
@@ -31,4 +35,11 @@ public interface UserService {
      * @return int
      */
     int addOne(TbUser tbUser);
+
+    /**
+     * 查询好友列表
+     * @param onwerId
+     * @return
+     */
+    List<Friend> queryAllFriends(String onwerId);
 }

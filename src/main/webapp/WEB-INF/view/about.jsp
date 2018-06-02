@@ -21,7 +21,7 @@
                 <blockquote>
                     <p>WebChat主要使用SSM框架,即Spring + Spring MVC + Mybatis</p>
                     <p>通讯使用的是websocket</p>
-                    <p>数据库使用的是Oracle 10g express版</p>
+                    <p>数据库使用的是mysql8.0.11版</p>
                     <p>前端框架采用的是<a href="http://http://amazeui.org" target="_blank">Amaze UI</a>,弹窗控件和分页控件采用的是<a
                             href="http://http://layer.layui.com/" target="_blank">Layer</a>和<a
                             href="http://http://laypage.layui.com/" target="_blank">Laypage</a></p>
@@ -31,7 +31,7 @@
             <div class="am-tab-panel am-fade am-in" id="tab2">
                 <hr>
                 <blockquote>
-                    <p><a href="https://github.com/Amayadream/WebChat" target="_blank">https://github.com/Amayadream/WebChat</a>
+                    <p><a href="https://github.com/Amayadream/WebChat" target="_blank">https://github.com/HanochLzd/webchat</a>
                     </p>
                 </blockquote>
             </div>
@@ -39,8 +39,8 @@
             <div class="am-tab-panel am-fade am-in" id="tab3">
                 <hr>
                 <blockquote>
-                    <p>欢迎访问我的个人网站<a href="http://www.amayadream.com" target="_blank">Amayadream.com</a>,虽然并没有什么东西可看</p>
-                    <p>也欢迎访问我的github, <a href="https://github.com/Amayadream" target="_blank">github.com/Amayadream</a>
+                    <p>欢迎访问我的个人网站<a href="http://www.amayadream.com" target="_blank">Hanoch.com</a>,虽然并没有什么东西可看</p>
+                    <p>也欢迎访问我的github, <a href="https://github.com/Amayadream" target="_blank">https://github.com/HanochLzd</a>
                     </p>
                 </blockquote>
             </div>

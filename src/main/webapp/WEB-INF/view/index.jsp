@@ -91,6 +91,30 @@
                 </li>
             </ul>
             <ul class="am-list am-list-static am-list-striped" id="list">
+                <c:forEach items="${friends}" var="friend">
+                    <li id="${requestScope.friend.friendId}">
+                        <i class="am-icon-user am-icon-fw"></i>${friend.friendNickName}
+
+                        <small>[${friend.group}]</small>
+                        <button type="button" class="am-btn am-btn-xs am-btn-primary am-round " onclick="addChat();">
+                            <span class="am-icon-phone"></span>
+                        </button>
+                        <button id="livevideo" type="button" class="am-btn am-btn-xs am-btn-primary am-round">
+                            <span class="am-icon-video-camera"></span>
+                        </button>
+
+                            <%--<li class="am-dropdown" data-am-dropdown>--%>
+                            <%--<a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">--%>
+                            <%--${userid} <span class="am-icon-caret-down"></span>--%>
+                            <%--</a>--%>
+                            <%--<ul class="am-dropdown-content">--%>
+                            <%--<li><a href="${ctx}/${userid}"><span class="am-icon-user"></span> 资料</a></li>--%>
+                            <%--<li><a href="${ctx}/${userid}/config"><span class="am-icon-cog"></span> 设置</a></li>--%>
+                            <%--<li><a href="${ctx}/user/logout"><span class="am-icon-power-off"></span> 注销</a></li>--%>
+                            <%--</ul>--%>
+                            <%--</li>--%>
+                    </li>
+                </c:forEach>
             </ul>
         </div>
     </div>
@@ -179,7 +203,7 @@
             layer.open({
                 type: 2,
                 title: '系统日志',
-                maxmin: false,
+                maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
                 area: ['800px', '520px'],
                 content: '${ctx}/admin/log'
@@ -195,6 +219,18 @@
                 shadeClose: true, //点击遮罩关闭层
                 area: ['800px', '520px'],
                 content: '${ctx}/help'
+            });
+        });
+
+        //视频
+        $('#livevideo').on('click', function () {
+            layer.open({
+                type: 2,
+                title: '视频',
+                maxmin: false,
+                shadeClose: true, //点击遮罩关闭层
+                area: ['800px', '520px'],
+                content: '${ctx}/live'
             });
         });
     });
@@ -441,11 +477,11 @@
      * 展示在线列表
      */
     function showOnline(list) {
-        $("#list").html("");    //清空在线列表
+        // $("#list").html("");    //清空在线列表
         $.each(list, function (index, item) {     //添加私聊按钮
             var li = "<li><i class=\"am-icon-user am-icon-fw\"></i>" + item + "<span class=\"layui-badge-dot\"></span></li>";
             if ('${userid}' !== item) {    //排除自己
-                li = "<li id=\"" + item + "\"><i class=\"am-icon-user am-icon-fw\"></i>" + item + " <button type=\"button\" class=\"am-btn am-btn-xs am-btn-primary am-round\" onclick=\"addChat('" + item + "');\"><span class=\"am-icon-phone\"><span> 私聊</button></li>";
+                li = "<li id=\"" + item + "\"><i class=\"am-icon-user am-icon-fw\"></i>" + item + " <button type=\"button\" class=\"am-btn am-btn-xs am-btn-primary am-round\" onclick=\"addChat('" + item + "');\"><span class=\"am-icon-phone\"></span> 私聊</button></li>";
             }
             $("#list").append(li);
         });
