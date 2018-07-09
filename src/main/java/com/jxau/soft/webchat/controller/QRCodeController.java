@@ -12,8 +12,8 @@ public class QRCodeController {
 
     @Test
     public void test1() {
-        PythonInterpreter interpreter = new PythonInterpreter();
-
+        //PythonInterpreter interpreter = new PythonInterpreter();
+        
     }
 
 }
